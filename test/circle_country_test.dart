@@ -18,20 +18,19 @@
 
 import 'dart:math';
 
+import 'package:quiver/iterables.dart';
 import 'package:test/expect.dart';
 import 'package:test/test.dart';
 
 int solve(List<int> listX, List<int> listY, List<int> listR, int startX,
     int startY, int goalX, int goalY) {
-  var result = 0;
-  for (var i = 0; i < listX.length; i++) {
-    var toStart = sqrt(pow(listX[i] - startX, 2) + pow(listY[i] - startY, 2));
-    var toGoal = sqrt(pow(listX[i] - goalX, 2) + pow(listY[i] - goalY, 2));
-    if (toStart <= listR[i] || (toGoal <= listR[i] && toStart > listR[i])) {
-      result++;
-    }
-  }
-  return result;
+  return zip([listX, listY, listR])
+      .where((circle) =>
+          (sqrt(pow(circle[0] - startX, 2) + pow(circle[1] - startY, 2)) <=
+              circle[2]) !=
+          (sqrt(pow(circle[0] - goalX, 2) + pow(circle[1] - goalY, 2)) <=
+              circle[2]))
+      .length;
 }
 
 void main() {
