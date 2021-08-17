@@ -41,19 +41,11 @@ int solve(List<String> roads) {
     }
   }
   // ルートの中から通るべきルートをすべて通っているものをカウントする
-  var result = 0;
-  routes.forEach((route) {
-    var flag = true;
-    requiredRoutes.forEach((requiredRoute) {
-      if (!route.contains(requiredRoute) &&
-          !route.contains(requiredRoute.split('').reversed.join())) {
-        flag = false;
-      }
-    });
-    if (flag) result++;
-  });
-
-  return result;
+  return routes
+      .where((route) => requiredRoutes.every((requiredRoute) =>
+          route.contains(requiredRoute) ||
+          route.contains(requiredRoute.split('').reversed.join())))
+      .length;
 }
 
 void main() {
